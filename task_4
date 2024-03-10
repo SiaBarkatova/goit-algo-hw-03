@@ -1,0 +1,48 @@
+from datetime import datetime, timedelta
+
+users = [
+    {"name": "John Doe", "birthday": "1985.03.15"},
+    {"name": "Jane Smith", "birthday": "1990.01.27"},
+    {"name": "Stephen King", "birthday": "1947.09.21"},
+    {"name": "Apple Macintosh", "birthday": "1989.03.12"},
+]
+
+
+def get_upcoming_birthdays(users_data):
+    today = datetime.today().date()
+
+    # number of days to check birthdays and set congratulation dates
+    check_period = 7
+
+    bdays = []
+
+    for user in users_data:
+        # transform birthday date for this year
+        birthday = datetime.strptime(user["birthday"], "%Y.%m.%d").replace(year=today.year).date()
+        if birthday < today:
+            # if it already passed, transform date for next year
+            birthday = datetime.strptime(user["birthday"], "%Y.%m.%d").replace(year=today.year + 1).date()
+
+        # if the b-day is too far away - skip
+        if (birthday - today).days > check_period:
+            continue
+
+        # Mon-Fri - adding without changes
+        if birthday.weekday() < 5:
+            user["congratulation_date"] = birthday.strftime("%Y.%m.%d")
+
+        # Saturday - move the congratulation date for 2 days
+        elif birthday.weekday() == 5:
+            user["congratulation_date"] = (birthday + timedelta(2)).strftime("%Y.%m.%d")
+
+        # Sunday - move the congratulation date for 1 day
+        elif birthday.weekday() == 6:
+            user["congratulation_date"] = (birthday + timedelta(1)).strftime("%Y.%m.%d")
+
+        # adding prepared user data to the list
+        bdays.append(user)
+
+    return bdays
+
+
+print(get_upcoming_birthdays(users))

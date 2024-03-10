@@ -1,0 +1,24 @@
+from random import randint
+
+def get_numbers_ticket(min, max, quantity):
+    #validations
+    wrong_min = min < 0 or min > 1000
+    wrong_max = max < 0 or max > 1000
+    wrong_diff = max - min < quantity
+
+    # skip if any parameter is wrong
+    if wrong_min or wrong_max or wrong_diff:
+        return "wrong args"
+
+    rands = set()
+
+    # add random numbers to the set until reach the required quantity
+    while len(rands) != quantity:
+        rands.add(randint(min,max))
+
+    return sorted(list(rands))
+
+
+ticket = get_numbers_ticket(1, 49, 6)
+
+print(ticket)

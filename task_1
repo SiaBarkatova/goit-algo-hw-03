@@ -1,0 +1,15 @@
+from datetime import datetime
+
+def get_days_from_today(u_date):
+    # used try to handle date format errors
+    try:
+        # calculate difference between today and date provided by user
+        time_period = datetime.today().date() - datetime.strptime(u_date, "%Y-%m-%d").date()
+        return time_period.days
+    
+    except:
+        return "The date is wrong."
+    
+user_date = input("Enter the date in format YYYY-mm-dd: ")
+
+print(get_days_from_today(user_date))
